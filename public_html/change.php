@@ -1,64 +1,43 @@
 <?php
  file_put_contents("request.txt",json_encode($_REQUEST));
-// fopen("file.txt");
-// echo dirname(__FILE__)."/request.txt";
- $users[0] = array('name' => 'Petro', 'id' => 0);
- $users[1] = array('name' => 'Andrew', 'id' => 1);    
- $users[2] = array('name' => 'Ihor', 'id' => 2);  
- $users[3] = array('name' => 'Katya', 'id' => 3);
+ header('Content-Type: application/json');
  
- $result = array(
-     'name' => null,
-     'status' => 'error',
-     'valid' => false,
-     'id' => null);
+    $users[0] = array('name' => 'Petro', 'id' => 00);
+    $users[1] = array('name' => 'Andrew', 'id' => 01);    
+    $users[2] = array('name' => 'Ihor', 'id' => 02);  
+    $users[3] = array('name' => 'Katya', 'id' => 03);
+    
+ function isValidUser($users,$userName){  
+    for($i=0; $i<count($users);$i++)
+        {
+           if($users[$i]['name'] == $userName)
+              return true;
+        }
+        return false;
+ };
+ 
+  function getUserId($users,$userName){  
+    for($i=0; $i<count($users);$i++)
+        {
+           if($users[$i]['name'] == $userName)
+              return $users[$i]['id'];
+        }
+    };
+ 
  
  $action = $_GET['action'];
+ $userName = $_GET['userName'];  
 
  if($action == "validateUser")
  {
-    $userName = $_GET['userName'];  
-    
-    for($i=0; $i<count($users);$i++)
-    {
-       if($users[$i]['name'] == $userName)
-       {
-        $result = array(
-        'name' => $userName,
-        'status' => "success",
-        'valid' => true,
-         'id' => $users['id']
-            );
-            break;
-       }
-    }
-
-//    $isValid = in_array($userName,$array['name']);
-//    $result = array(
-//        'name' => $userName,
-//        'status' => $isValid?"success":"error",
-//        'valid' => $isValid
-//    );
-//     
+    $isValid = isValidUser($users,$userName);
+    echo json_encode($isValid);
+  
  }
- 
- 
- else if($action == "getId")
+ else if($action == "getUserId")
  {
-    for($i=0; $i<count($users);$i++)
-    {
-       if($users[$i]['name'] == $userName)
-       {
-        $result = array(
-        'name' => $userName,
-        'status' => "success",
-        'valid' => true,
-         'id' => $users['id']
-            );
-            break;
-       }
-    }
+     $userId = getUserId($users,$userName);
+     echo json_encode($userId);
+
  }
- header('Content-Type: application/json');
- echo json_encode($result);
-?>
+ 

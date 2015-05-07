@@ -4,7 +4,8 @@ var Controller = Backbone.Router.extend({
         "": "start",
         "!/": "start",
         "!/success":"success",
-        "!/error":"error"
+        "!/error":"error",
+        "!/userId":"userId"
     },
     start : function(){
       appState.set({state:"start"});
@@ -15,13 +16,17 @@ var Controller = Backbone.Router.extend({
     },
     error : function(){
        appState.set({state:"error"})
-    }   
+    },
+    userId : function(){
+      appState.set({state:"userid"})
+    }
 });
 var controller = new Controller();
 var AppState = Backbone.Model.extend({
    defaults: {
        username:"",
-       state:"start"
+       state:"start",
+       userid:""
    } 
 });
 var appState = new AppState();
@@ -32,11 +37,12 @@ var Block  = Backbone.View.extend({
     templates: {
         "start": _.template($('#start').html()),
         "success" :_.template($('#success').html()),
-        "error": _.template($('#error').html())
+        "error": _.template($('#error').html()),
+        "userId": _.template($('#userId').html())
     },
    
     events : {
-        "click input:button": "check",
+        "click #validateUser": "check",
         "click #getUserId" : "getUserId"
     },
     check: function()
@@ -50,13 +56,11 @@ var Block  = Backbone.View.extend({
            dataType:"json",
            success:  function(response){
                 appState.set({
-                "state": response.status,
-                "username": response.name,
-                "valid":response.valid
+                "state": response?'success':'error',
+                "username": username
             }); 
-            console.log(response);
+            console.log("Response "+response);
            }
-           
        });  
     },
     getUserId : function()
@@ -64,25 +68,24 @@ var Block  = Backbone.View.extend({
         $.ajax({
            type:"get",
            url: "change.php",
-           data: {userName:username,action:"getUserId"},
+           data: {userName:this.model.get("username"),action:"getUserId"},
            dataType:"json",
-           success:  function(response){
+           success:  function(userid){
+                result = userid;
                 appState.set({
-                "state": response.status,
-                "username": response.name,
-                "valid":response.valid
-            }); 
-            console.log(response);
+                "state": "userId",
+                "userid": userid
+            });  
            }
-           
+          
        });  
     },
     initialize: function(){
         this.model.bind("change",this.render,this);
     },
-    render: function(){
+    render: function(){esult=0
         var state = this.model.get("state");
-        console.log("this.model" + this.model);
+        console.log("this.model " + this.model.toJSON());
         $(this.el).html(this.templates[state](this.model.toJSON()));
         return this;
     }
