@@ -17,23 +17,29 @@
                 <input type="text" id="username" />
             </div>
             <div class="buttonplace">
-                <input type="button" value="Check" />
+                <input type="button" id="validateUser" value="Check" /> 
             </div>
  
         </script>
         <script type="text/template" id="error">
         <div class="error">
-        <%= username %>
+        User <%= username %> is not valid
          <a href="#!/">Go back</a>
         </div>
         </script>
         <script type="text/template" id="success">
         <div class="success">
-        <%= username %>
-         
+         <%= username %>
              <div class="buttonplace">
                 <input type="button" id="getUserId" value="getUserId" />
             </div> 
+         <a href="#!/">Go back</a>
+        </div> 
+        </script>
+        <script type="text/template" id="userId">
+        <div class="userId">
+         <%= username %>
+         <%= userid %>
          <a href="#!/">Go back</a>
         </div> 
         </script>
