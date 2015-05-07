@@ -11,7 +11,15 @@
     for($i=0; $i<count($users);$i++)
         {
            if($users[$i]['name'] == $userName)
-              return true;
+           {
+               $result = array(
+                   'status' => true,
+                   'data' => array(
+                   'name'=> $users[$i]['name']
+                   )
+                   );
+                return $result;   
+           }
         }
         return false;
  };
@@ -30,8 +38,8 @@
 
  if($action == "validateUser")
  {
-    $isValid = isValidUser($users,$userName);
-    echo json_encode($isValid);
+    $response = isValidUser($users,$userName);
+    echo json_encode($response);
   
  }
  else if($action == "getUserId")
