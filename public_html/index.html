@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Test backbone</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link type="text/css" rel="stylesheet" href="css/style.css" />
+       
+    </head>
+    <body>
+        
+        <div id="block" class="block"></div>
+        
+        <script type="text/template" id="start">
+           <div class="userplace">
+                <label>Your name</label>
+                <input type="text" id="username" />
+            </div>
+            <div class="buttonplace">
+                <input type="button" value="Check" />
+            </div>
+ 
+        </script>
+        <script type="text/template" id="error">
+        <div class="error">
+        <%= username %>
+         <a href="#!/">Go back</a>
+        </div>
+        </script>
+        <script type="text/template" id="success">
+        <div class="success">
+        <%= username %>
+         
+             <div class="buttonplace">
+                <input type="button" id="getUserId" value="getUserId" />
+            </div> 
+    
+         <a href="#!/">Go back</a>
+        </div> 
+        </script>
+        
+                  
+        
+        
+        <script src="js/jquery-1.7.1.min.js"></script>
+        <script src="js/underscore-min.js"></script>
+         <script src="js/backbone-min.js"></script>
+        <script src="js/main.js"></script>
+    </body>
+</html>
