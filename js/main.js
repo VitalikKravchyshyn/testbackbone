@@ -25,7 +25,6 @@ var controller = new Controller();
 var AppState = Backbone.Model.extend({
    defaults: {
        username:"",
-       state:"start",
        userid:""
    } 
 });
@@ -54,12 +53,29 @@ var Block  = Backbone.View.extend({
            url: "change.php",
            data: {userName:username,action:"validateUser"},
            dataType:"json",
-           success:  function(response){
-                appState.set({
-                "state": response?'success':'error',
-                "username": username
-            }); 
-            console.log("Response "+response);
+           success:  function(response) {
+                if (!response.status || !response.data)
+                {
+                    //This mean an error occured
+                    // TODO: show error message
+                    
+                    return false;
+                }
+                
+                /*
+                TODO: implement response
+                var responce = {
+                    status: true,
+                    data: {
+                        username: 'Vasya'
+                    }
+                
+                }
+                */
+                
+                appState.set(response.data); 
+                
+                // console.log("Response "+response);
            }
        });  
     },
@@ -81,7 +97,16 @@ var Block  = Backbone.View.extend({
        });  
     },
     initialize: function(){
-        this.model.bind("change",this.render,this);
+        this.model.bind("change",this.onModelChange,this);
+        this.render();
+    },
+    
+    onModelChange: function()
+    {
+        // Do some check here
+        
+        console.log('onModelChange', arguments, this.model.changedAttributes());
+        this.render();
     },
     render: function(){esult=0
         var state = this.model.get("state");
@@ -91,7 +116,7 @@ var Block  = Backbone.View.extend({
     }
 });
  var block = new Block({ model: appState });
- appState.trigger("change");
+//  appState.trigger("change");
  
  appState.bind("change:state",function(){
         var state = this.get("state");
