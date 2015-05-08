@@ -8,29 +8,25 @@ var Controller = Backbone.Router.extend({
         "!/error":"error",
         "!/userId":"userId"
     },
-    start : function(){
-      appState.set({state:"start"});
-    },
+    start : function(){  
+     pmodel.set({'state':"start"});
+    }, 
     success : function(){
-      appState.set({state:"success"})
-          
+     pmodel.set({'state':"success"});      
     },
     error : function(){
-       appState.set({state:"error"})
+     pmodel.set({'state':"error"});
     },
     userId : function(){
-      appState.set({state:"userid"})
+     pmodel.set({'state':"userid"});
+      //models.set({state:"userid"})
     }
 });
 var controller = new Controller();
-var AppState = Backbone.Model.extend({
-   defaults: {
-       username:"",
-       userid:""
-   } 
+var Model = Backbone.Model.extend({
+
 });
-var appState = new AppState();
-//var Family = ["Саша", "Юля", "Антон"]; 
+var pmodel = new Model();
 
 var View  = Backbone.View.extend({
     el: $("#block"),
@@ -58,8 +54,11 @@ var View  = Backbone.View.extend({
                 {
                     //This mean an error occured
                     // TODO: show error message
-                    
+                    $("#errormessage").html(view.templates['error']); 
                     return false;
+                }
+                else{
+                  pmodel.set(response.data);  
                 }
                 
                 /*
@@ -73,10 +72,10 @@ var View  = Backbone.View.extend({
                 }
                 */
                 
-                appState.set(response.data); 
+            //   pmodel.set(response.data);
                 
                 // console.log("Response "+response);
-           }
+          }
        });  
     },
     getUserId : function()
@@ -88,33 +87,38 @@ var View  = Backbone.View.extend({
            dataType:"json",
            success:  function(userid){
                 result = userid;
-                appState.set({
+                pmodel.set({
                 "state": "userId",
-                "userid": userid
+                "userid": "userid"
             });  
            }
           
        });  
     },
     initialize: function(){
-        this.state = "start";
         this.model.bind("change",this.onModelChange,this);
-        this.render();
     },
     
     onModelChange: function()
-    {
+    {   
         console.log('onModelChange', this.model.changedAttributes());
+        
         this.render();
     },
     render: function(){
-        console.log("this.model.changedAttributes()" + this.model.changedAttributes());
-        var state = this.model.changedAttributes();
-        $(this.el).html(this.templates[this.state](this.model.changedAttributes()));
+//        var state = this.model.changedAttributes();
+        var x =5;   
+        var y= 10;   
+        x = x/y;
+        y = y*x;
+        x = y/x;
+        console.log(x,y);
+        
+        $(this.el).html(this.templates[pmodel.get('state')](this.model.changedAttributes()));
         return this;
     }
 });
- var view = new View({ model: appState });
+ var view = new View({ model: pmodel });
 //  appState.trigger("change");
  
 // appState.bind("change:state",function(){

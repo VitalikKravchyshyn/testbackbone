@@ -15,11 +15,18 @@ body {
 #error, #success{
     display: none;
 }
-.start-form {
+.active-place {
     margin: 100px auto;
     max-width: 400px;
 }
 .form-control {
     height: auto;
     padding: 10px;
+}
+label{
+    font-size: 20px;
+    font-weight: normal;
+}
+.alert-danger {
+  margin-top: 20px;
 }
