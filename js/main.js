@@ -1,82 +1,40 @@
 $(function () {
+var validateUserModel = Backbone.Model.extend({}); 
+var getUserId  = Backbone.View.extend({});
 
-var Controller = Backbone.Router.extend({
-    routes: {
-        "": "start",
-        "!/": "start",
-        "!/success":"success",
-        "!/error":"error",
-        "!/userId":"userId"
-    },
-    start : function(){  
-     pmodel.set({'state':"start"});
-    }, 
-    success : function(){
-     pmodel.set({'state':"success"});      
-    },
-    error : function(){
-     pmodel.set({'state':"error"});
-    },
-    userId : function(){
-     pmodel.set({'state':"userid"});
-      //models.set({state:"userid"})
-    }
-});
-var controller = new Controller();
-var Model = Backbone.Model.extend({
-
-});
-var pmodel = new Model();
-
-var View  = Backbone.View.extend({
+var validateUser  = Backbone.View.extend({
     el: $("#block"),
     templates: {
-        "start": _.template($('#start').html()),
-        "success" :_.template($('#success').html()),
-        "error": _.template($('#error').html()),
-        "userId": _.template($('#userId').html())
+        "error": _.template($('#error').html())
     },
-   
     events : {
         "click #validateUser": "check",
         "click #getUserId" : "getUserId"
     },
+    initialize: function()
+    {
+     // this.model = model;      
+      this.model.bind("change",this.onModelChange,this);
+    },
+    onModelChange: function()
+    {   
+        console.log('onModelChange', this.model.changedAttributes());
+        this.render();
+    },
+    render: function(){
+        $(this.el).html(_.template($('#start').html(this.templates.error))); 
+        return this;
+    },
+    showError: function()
+    {
+        $(this.el).find('.error').html();
+    },
     check: function()
     {
        var username = this.el.find("input:text").val();
-       $.ajax({
-           type:"get",
-           url: "change.php",
-           data: {userName:username,action:"validateUser"},
-           dataType:"json",
-           success:  function(response) {
-                if (!response.status || !response.data)
-                {
-                    //This mean an error occured
-                    // TODO: show error message
-                    $("#errormessage").html(view.templates['error']); 
-                    return false;
-                }
-                else{
-                  pmodel.set(response.data);  
-                }
-                
-                /*
-                TODO: implement response
-                var responce = {
-                    status: true,
-                    data: {
-                        username: 'Vasya'
-                    }
-                
-                }
-                */
-                
-            //   pmodel.set(response.data);
-                
-                // console.log("Response "+response);
-          }
-       });  
+       
+       this.trigger('submit', username);    
+
     },
     getUserId : function()
     {
@@ -85,60 +43,60 @@ var View  = Backbone.View.extend({
            url: "change.php",
            data: {userName:this.model.get("username"),action:"getUserId"},
            dataType:"json",
-           success:  function(userid){
-                result = userid;
-                pmodel.set({
-                "state": "userId",
-                "userid": "userid"
-            });  
+           success:  function(response){
+               if (!response.status || !response.data)
+                {
+                    //This mean an error occured
+                    // TODO: show error message
+                    $("#errormessage").html(view.templates['error']); 
+                    return false;
+                }
+                else{
+                  pmodel.set(response.data);  
+                }    
            }
           
        });  
-    },
-    initialize: function(){
-        this.model.bind("change",this.onModelChange,this);
-    },
-    
-    onModelChange: function()
-    {   
-        console.log('onModelChange', this.model.changedAttributes());
-        
-        this.render();
-    },
-    render: function(){
-//        var state = this.model.changedAttributes();
-        var x =5;   
-        var y= 10;   
-        x = x/y;
-        y = y*x;
-        x = y/x;
-        console.log(x,y);
-        
-        $(this.el).html(this.templates[pmodel.get('state')](this.model.changedAttributes()));
-        return this;
     }
 });
- var view = new View({ model: pmodel });
-//  appState.trigger("change");
- 
-// appState.bind("change:state",function(){
-//        var state = this.get("state");
-//        console.log("State  ---" + state);
-//        if(state=="start")
-//            controller.navigate("!/",false);
-//        else
-//            controller.navigate("!/"+state,false);
-//    });
-//    var view = new Block({model: appState});
-//    appState.trigger("change");
-
-//    appState.bind("change:state", function () {
-//        var state = this.get("state");
-//        console.log("State  ---" + state);
-//        if (state == "start")
-//            controller.navigate("!/", false);
-//        else
-//            controller.navigate("!/" + state, false)
-//    });
-    Backbone.history.start();
+ var Controller = Backbone.Router.extend({
+    views: {},    
+    routes: {
+        '/': 'initDefaultView'
+    },
+    initialize: function(){
+      // var validateUserModel = new validateUserModel();
+        this.views.validateUser = new validateUser(validateUserModel);  
+        this.views.validateUser.on('submit', this.onValidateUser, this);
+    },
+    initDefaultView: function()
+    {
+//        this.navigate('/validateUser', {})
+        this.views.validateUser.render();
+        
+    },
+    
+    onValidateUser:function(name)
+    {
+        $.ajax({
+           type:"get",
+           url: "change.php",
+           data: {userName:name,action:"validateUser"},
+           dataType:"json",
+           success:  function(response) {
+                if (!response.status || !response.data)
+                {
+//                    this.views.validateUser.showError();
+//                 $(".error").html(view.templates['error']); 
+                    return false;
+                }
+                else{
+                  validateUserModel.set(response.data);  
+                }
+          }
+       });  
+    }
+    
+});
+var controller = new Controller();
 });
