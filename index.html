@@ -1,60 +1,61 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Test backbone</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
-    <link type="text/css" rel="stylesheet" href="css/style.css"/>
+    <head>
+        <title>Test backbone</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <link type="text/css" rel="stylesheet" href="css/style.css"/>
+    </head>
+    <body>
 
-</head>
-<body>
+        <div id="block" class="container">
+            <div class="start-form">
 
-    <div id="block" class="container">
-        <div class="start-form">
-            
+            </div>
         </div>
-    </div>
 
-<script type="text/template" id="start">
-    
-        <div class="userplace">
-            <label>Your name</label><br>
-            <input class="form-control" autofocus type="text" id="username"/><br>
-        </div>
-        <div class="buttonplace">
-            <input type="submit" class="btn btn-lg btn-primary btn-block" id="validateUser" value="Check"/>
-        </div>
-        <div class="error"></div>
+        <script type="text/template" id="start">
+            <div class="active-place">
+                <div class="userplace">
+                    <label>Your name</label><br>
+                    <input class="form-control" autofocus type="text" id="username"/><br>
+                </div>
+                <div class="buttonplace">
+                    <input type="submit" class="btn btn-lg btn-primary btn-block" id="validateUser" value="Check"/>
+                </div>
+                <div class="error"></div>
+              </div>
 
-</script>
-<script type="text/template" id="error">
-    <div class="alert alert-danger">
-        Not valid username please check your login
-    </div>
-</script>
-<script type="text/template" id="success">
-    <div class="success">
-        <%= username %>
-        <div class="buttonplace">
-            <input type="button" id="getUserId" value="getUserId"/>
-        </div>
-        <a href="#!/">Go back</a>
-    </div>
-</script>
-<script type="text/template" id="userId">
-    <div class="userId">
-        <%= username %>
-        <%= userid %>
-        <a href="#!/">Go back</a>
-    </div>
-</script>
+        </script>
+        <script type="text/template" id="error">
+            <div class="alert alert-danger">
+            Not valid username please check your login
+            </div>
+        </script>
+        <script type="text/template" id="success">
+            <div class="active-place">
+            <div class="success">
+                <label>Welcome, <%= name  %> </label>
+                <div class="buttonplace">
+                    <input type="button" class="btn btn-lg btn-primary btn-block" id="getUserId" value="getUserId"/>
+                </div>
+            </div>
+           </div>
+        </script>
+        <script type="text/template" id="userId">
+            <div class="userId">
+            <%= username %>
+            <%= userid %>
+            <a href="#!/">Go back</a>
+            </div>
+        </script>
 
 
-<script src="js/jquery-1.11.3.min.js"></script>
-<script src="js/underscore-min.js"></script>
-<script src="js/backbone-min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/main.js"></script>
-</body>
+        <script src="js/jquery-1.11.3.min.js"></script>
+        <script src="js/underscore-min.js"></script>
+        <script src="js/backbone-min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/main.js"></script>
+    </body>
 </html>

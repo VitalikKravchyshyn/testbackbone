@@ -12,10 +12,10 @@ body {
     padding-bottom: 40px;
     background-color: #eee;
 }
-#error, #success{
+#error,#success{
     display: none;
 }
-.active-place {
+.active-place{
     margin: 100px auto;
     max-width: 400px;
 }

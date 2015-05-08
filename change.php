@@ -21,7 +21,7 @@
                 return $result;   
            }
         }
-        return false;
+        return $result = array('status' => false);
  };
  
   function getUserId($users,$userName){  
@@ -48,4 +48,4 @@
      echo json_encode($userId);
 
  }
- 
+  
