@@ -7,7 +7,19 @@ and open the template in the editor.
     Created on : May 6, 2015, 12:14:47 PM
     Author     : vitaliyk
 */
-
+body {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #eee;
+}
 #error, #success{
     display: none;
+}
+.start-form {
+    margin: 100px auto;
+    max-width: 400px;
+}
+.form-control {
+    height: auto;
+    padding: 10px;
 }
