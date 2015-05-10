@@ -37,18 +37,13 @@
             <div class="active-place">
             <div class="success">
                 <label>Welcome, <%= name  %> </label>
+                <label>Your id, <%= typeof(id)!== 'undefined' ?  id : '' %> </label>
+
                 <div class="buttonplace">
-                    <input type="button" class="btn btn-lg btn-primary btn-block" id="getUserId" value="getUserId"/>
+                    <input type="submit" class="btn btn-lg btn-primary btn-block" id="getUserId" value="getUserId"/>
                 </div>
             </div>
            </div>
-        </script>
-        <script type="text/template" id="userId">
-            <div class="userId">
-            <%= username %>
-            <%= userid %>
-            <a href="#!/">Go back</a>
-            </div>
         </script>
 
 
