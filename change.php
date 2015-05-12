@@ -31,8 +31,7 @@
                $result = array(
                    'data' =>
                    array(
-                   'id' =>$users[$i]['id'],
-                       'name' =>$users[$i]['name']
+                   'id' =>$users[$i]['id']
                    )
                );
                return $result;
