@@ -16,13 +16,13 @@ var getUserId = Backbone.View.extend({
         this.render();
     },
     render: function(){
-         console.log('onModelChange--lpl-', this.model.changedAttributes());
-        this.el.html(_.template($('#success').html())(this.model.changedAttributes())); 
+        this.name  =  this.model.changedAttributes().name;
+        this.el.html(_.template($('#success').html())(this.model.attributes));
         return this;
     },
-    getUserId : function(username)
+    getUserId : function()
     {
-       this.trigger('submit',username);  
+       this.trigger('submit',this.name);
     }
 });
 
@@ -69,11 +69,14 @@ var validateUser = Backbone.View.extend({
     initialize: function(){
         console.log("Controller initialize");
         ValidateUserModel = new validateUserModel();
-        this.views.validateUser = new validateUser(ValidateUserModel);  
+
+        this.views.validateUser = new validateUser(ValidateUserModel);
+        this.views.getUserId = new getUserId(ValidateUserModel);
+
         this.views.validateUser.bind('submit', this.onValidateUser, this);
-        
-        this.views.getUserId = new getUserId(ValidateUserModel); 
-        this.views.validateUser.render();this
+        this.views.getUserId.bind('submit', this.getUserId, this);
+
+        this.views.validateUser.render();
     },
     initDefaultView: function()
     {
@@ -90,12 +93,13 @@ var validateUser = Backbone.View.extend({
            success:  function(response) {
                 if (!response.status || !response.data)
                 { 
-                    console.log("sdfg",this);
+                    console.log("sdfg----",this);
                     self.showError();
                    return false;
                 }
                 else{
-                  ValidateUserModel.set(response.data); 
+                  ValidateUserModel.set(response.data);
+                    console.log("response  " + JSON.stringify(response.data));
 //                  this.views.getUserId.render();
                 }
           }
@@ -109,21 +113,12 @@ var validateUser = Backbone.View.extend({
            data: {userName:name,action:"getUserId"},
            dataType:"json",
            success:  function(response){
-               if (!response.status || !response.data)
-                {
-                    //This mean an error occured
-                    // TODO: show error message
-                    $(".error").html(view.templates.error); 
-                    return false;
-                }
-                else{
-                  pmodel.set(response.data);  
-                }    
-           }
-          
+                   ValidateUserModel.set(response.data);
+                    console.log("response  " + JSON.stringify(response.data));
+           }       
        });  
     }
-    
+
 });
 var controller = new Controller();
 });
