@@ -55,8 +55,7 @@ var validateUser = Backbone.View.extend({
         this.el.find('.error').html(this.templates.error);
     },
     check: function()
-    {
-       
+    {    
        var username = this.el.find("input:text").val();  
        this.trigger('submit', username);
     }
