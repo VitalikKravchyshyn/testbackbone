@@ -44,12 +44,9 @@
  }
  else if($action == "getUserId")
  {
-    $git = $action;
-  
      $userId = getUserId($users,$userName);
      echo json_encode($userId);
 
  }
- 
  /* git  I am a contributor of this project  */
   
